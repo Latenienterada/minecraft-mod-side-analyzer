@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Mod Side Analyzer</title>
+</head>
+<body>
+
+<h2>Analizador de Mods de Minecraft</h2>
+
+<input type="file" id="modFile">
+<button onclick="analyze()">Analizar</button>
+
+<pre id="result"></pre>
+
+<script>
+function analyze() {
+    const file = document.getElementById("modFile").files[0];
+    if (!file) return alert("Selecciona un mod");
+
+    const form = new FormData();
+    form.append("mod", file);
+
+    fetch("http://localhost:5000/analyze", {
+        method: "POST",
+        body: form
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").textContent =
+            JSON.stringify(data, null, 2);
+    });
+}
+</script>
+
+</body>
+</html>
